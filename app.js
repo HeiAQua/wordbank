@@ -1,6 +1,22 @@
-const categories=['极限与连续','导数与微分','积分','级数','多元函数','其他'];
-const seed=[['limit','极限','极限与连续','The limit of f(x) as x approaches zero is 1.'],['continuity','连续性','极限与连续','Check the continuity of the function at x = 0.'],['convergence','收敛','级数','Determine the convergence of the series.'],['derivative','导数','导数与微分','The derivative represents the instantaneous rate of change.'],['differentiation','求导；微分运算','导数与微分','Find the derivative using implicit differentiation.'],['differential','微分','导数与微分','The differential of y is written as dy.'],['definite integral','定积分','积分','Evaluate the definite integral from 0 to 1.'],['antiderivative','原函数','积分','An antiderivative of 2x is x squared.'],['integration by parts','分部积分法','积分','Use integration by parts to evaluate the integral.'],['Taylor series','泰勒级数','级数','Expand the function as a Taylor series about zero.'],['partial derivative','偏导数','多元函数','Find the partial derivative with respect to x.'],['gradient','梯度','多元函数','The gradient points in the direction of steepest increase.']].map((x,i)=>({id:'seed-'+i,en:x[0],zh:x[1],category:x[2],example:x[3],done:false,seed:true}));
-const $=id=>document.getElementById(id);let words=seed,selected='全部词汇',editing=null;const key='calculus-word-bank-v1';try{const saved=JSON.parse(localStorage.getItem(key));if(Array.isArray(saved)&&saved.every(w=>w&&typeof w.en==='string'&&typeof w.zh==='string'&&categories.includes(w.category)&&typeof w.id==='string'))words=saved;}catch{}
+const categories=['函数基础','集合与数','图像与坐标','其他'];
+const seed=[["function", "函数：每个允许的输入，都对应唯一的输出。", "函数基础", "For f(x) = x², f(3) = 9.｜输入 3，输出 9。"], ["domain", "定义域：函数允许输入的所有值组成的集合。", "函数基础", "For f(x) = 1/x, the domain excludes 0.｜1/x 的输入不能是 0。"], ["range", "值域：函数实际能得到的所有输出组成的集合。", "函数基础", "For f: ℝ → ℝ, f(x) = x², the range is [0, ∞).｜平方的实际输出都是非负数。"], ["codomain", "陪域：定义函数时指定的目标集合，包含值域。", "函数基础", "For f: ℝ → ℝ, f(x) = x², the codomain is ℝ.｜目标集合是实数，但不代表每个实数都能输出。"], ["variable", "变量：可以取不同数值的符号，如 x。", "函数基础", "In y = 2x + 1, x and y are variables.｜x 和 y 是变量。"], ["constant", "常量：在当前问题中保持固定的量。", "函数基础", "In y = 2x + 1, 2 and 1 are constants.｜2 和 1 是固定数值。"], ["input", "输入：代入函数的值。", "函数基础", "The input is 3.｜把 x = 3 代入 f(x) = x²。"], ["output", "输出：函数给出的结果。", "函数基础", "The output is 9.｜f(3) = 9，所以输出是 9。"], ["independent variable", "自变量：作为输入的变量，通常记作 x。", "函数基础", "In y = f(x), x is the independent variable.｜x 是输入变量。"], ["dependent variable", "因变量：随自变量取值而确定的变量，通常记作 y。", "函数基础", "In y = 2x, y is the dependent variable.｜x 改变时，y 的值也随之确定。"], ["set", "集合：一些确定对象组成的整体。", "集合与数", "A = {1, 2, 3} is a set.｜A 是由 1、2、3 组成的集合。"], ["element", "元素：集合中的一个对象。", "集合与数", "2 is an element of A = {1, 2, 3}.｜写作 2 ∈ A。"], ["subset", "子集：其中每个元素也属于另一个集合。", "集合与数", "{1, 2} is a subset of {1, 2, 3}.｜写作 {1, 2} ⊆ {1, 2, 3}。"], ["real number", "实数：数轴上的数，包括整数、分数和无理数。", "集合与数", "−2, 1/2 and √2 are real numbers.｜实数集合记作 ℝ。"], ["interval", "区间：数轴上两个端点之间的一段，端点也可延伸到无穷。", "集合与数", "[0, 1] includes both endpoints; (0, 1) excludes them.｜方括号包含端点，圆括号不包含。"], ["graph", "图像：在坐标系中，用点表示函数的输入与输出关系。", "图像与坐标", "The graph of y = x² is a parabola.｜y = x² 的图像是一条抛物线。"], ["coordinate", "坐标：描述点位置的数；平面上常写成 (x, y)。", "图像与坐标", "The point has coordinates (2, 4).｜横坐标为 2，纵坐标为 4。"], ["x-axis", "x 轴：平面直角坐标系中的水平轴。", "图像与坐标", "The x-axis is horizontal.｜x 轴上的点满足 y = 0。"], ["y-axis", "y 轴：平面直角坐标系中的竖直轴。", "图像与坐标", "The y-axis is vertical.｜y 轴上的点满足 x = 0。"], ["slope", "斜率：直线的纵向变化量除以横向变化量。", "图像与坐标", "The line y = 2x + 1 has slope 2.｜x 每增加 1，y 增加 2。"]].map((x,i)=>({id:'beginner-'+i,en:x[0],zh:x[1],category:x[2],example:x[3],done:i<4,seed:true}));
+const $=id=>document.getElementById(id);let words=seed,selected='全部词汇',editing=null;
+const key='calculus-word-bank-v1',curriculumKey='calculus-word-bank-curriculum';
+try {
+  const saved=JSON.parse(localStorage.getItem(key));
+  if(Array.isArray(saved)&&saved.every(w=>w&&typeof w.en==='string'&&typeof w.zh==='string'&&typeof w.id==='string')) {
+    if(localStorage.getItem(curriculumKey)==='beginner-v1') {
+      words=saved.map(w=>({...w,category:categories.includes(w.category)?w.category:'其他'}));
+    } else {
+      // Replace legacy reference cards while preserving added and edited entries.
+      const personal=saved.filter(w=>w.seed!==true).map(w=>({...w,category:categories.includes(w.category)?w.category:'其他'}));
+      words=[...personal,...seed];
+    }
+  }
+  // Write migrated records before recording migration success.
+  localStorage.setItem(key,JSON.stringify(words));
+  localStorage.setItem(curriculumKey,'beginner-v1');
+} catch {}
 function toast(msg){$('toast').textContent=msg;$('toast').classList.remove('hidden');clearTimeout(toast.timer);toast.timer=setTimeout(()=>$('toast').classList.add('hidden'),3000)}
 function persist(){try{localStorage.setItem(key,JSON.stringify(words));return true}catch{toast('无法保存：请检查浏览器存储设置。本次修改尚未写入。');return false}}
 function node(tag,cls,text){const el=document.createElement(tag);if(cls)el.className=cls;if(text!==undefined)el.textContent=text;return el}
